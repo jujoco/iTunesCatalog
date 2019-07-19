@@ -1,18 +1,30 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
+import SearchBar from './SearchBar';
+
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      term: '',
       categories: {},
     };
-    this.onSubmit = this.onSubmit.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
-  componentDidMount() {
+  componentDidMount() {}
+
+  handleChange(e) {
+    this.setState({ term: e.target.value });
+  }
+
+  handleSubmit(e) {
+    e.preventDefault();
+    let term = this.state.term;
     axios
-      .get(`/search/coding`)
+      .get(`/search/${term}`)
       .then((res) => {
         this.setState({ categories: res.data });
       })
@@ -21,14 +33,15 @@ class App extends Component {
       });
   }
 
-  onSubmit(e) {
-    console.log('click');
-  }
-
   render() {
-    let { categories } = this.state;
+    let { categories, term } = this.state;
+    let { handleSubmit, handleChange } = this;
 
-    return <div className="section">HelloWorld</div>;
+    return (
+      <div className="section">
+        <SearchBar handleSubmit={handleSubmit} handleChange={handleChange} term={term} />
+      </div>
+    );
   }
 }
 
