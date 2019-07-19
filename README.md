@@ -1,6 +1,6 @@
 # iTunesCatalog
 
-a web application that allows users to search for songs, tv shows, movies, etc.
+A web app that allows users to search for songs, shows, movies, etc. via iTunes API
 
 ## build development bundle
 
