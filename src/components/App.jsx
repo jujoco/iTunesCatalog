@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import db from './db';
 
 import SearchBar from './SearchBar';
+import Category from './Category';
 
 class App extends Component {
   constructor(props) {
@@ -12,9 +14,35 @@ class App extends Component {
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleFavorite = this.handleFavorite.bind(this);
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    db.favorites
+      .toArray(this.sortFavorites)
+      .then((favorites) => this.setState({ categories: favorites }))
+      .catch((err) => console.log(err));
+  }
+
+  sortFavorites(list) {
+    const catalog = {};
+    for (let obj of list) {
+      if (!catalog[obj.type]) catalog[obj.type] = [reducer(obj)];
+      else catalog[obj.type].push(reducer(obj));
+    }
+    return catalog;
+    function reducer(obj) {
+      const { id, name, artwork, genre, url } = obj;
+      let newObj = {
+        id,
+        name,
+        artwork,
+        genre,
+        url,
+      };
+      return newObj;
+    }
+  }
 
   handleChange(e) {
     this.setState({ term: e.target.value });
@@ -33,14 +61,23 @@ class App extends Component {
       });
   }
 
+  handleFavorite(record) {
+    db.favorites
+      .put(record)
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+  }
+
   render() {
     let { categories, term } = this.state;
-    let { handleSubmit, handleChange } = this;
-
+    let { handleSubmit, handleChange, handleFavorite } = this;
     return (
-      <div className="section">
+      <>
         <SearchBar handleSubmit={handleSubmit} handleChange={handleChange} term={term} />
-      </div>
+        {Object.keys(categories).map((key, i) => {
+          return <Category category={categories[key]} handleFavorite={handleFavorite} sectionName={key} key={i} />;
+        })}
+      </>
     );
   }
 }
