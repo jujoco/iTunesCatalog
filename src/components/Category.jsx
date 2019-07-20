@@ -6,11 +6,11 @@ const Category = ({ category, sectionName, handleFavorite }) => {
   return (
     <div className="Category">
       <h2>{sectionName}</h2>
-      <Table className="Table">
+      <Table className="Table" dark>
         <thead>
           <tr scope="row">
             <th>Artwork</th>
-            <th>Save</th>
+            <th>Favorite</th>
             <th>Name</th>
             <th>Genre</th>
             <th>Link to iTunes</th>
