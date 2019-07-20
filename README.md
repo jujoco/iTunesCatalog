@@ -14,5 +14,6 @@ npm run bulid-dev
 npm start
 ```
 
-###Preview
+### Preview
+
 ![Preview Gif](iTunesAPI.gif)
