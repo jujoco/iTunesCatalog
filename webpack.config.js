@@ -1,10 +1,8 @@
 const path = require('path');
-
-const SRC_DIR = path.join(__dirname, '/src/index.js');
 const DIST_DIR = path.join(__dirname, '/public');
 
 module.exports = {
-  entry: `${SRC_DIR}`,
+  entry: `./src/index.js`,
   output: {
     filename: 'bundle.js',
     path: `${DIST_DIR}`,
@@ -13,9 +11,7 @@ module.exports = {
     rules: [
       {
         test: /\.(js|jsx)$/,
-        exclude: [
-          path.resolve(__dirname, 'node_modules'),
-        ],
+        exclude: /(node_modules)/,
         use: {
           loader: 'babel-loader',
           options: {
@@ -25,21 +21,14 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        loader: 'style-loader',
-      },
-      {
-        test: /\.css$/,
-        loader: 'css-loader',
-        options: {
-          modules: {
-            mode: 'local',
-            localIdentName: '[local]--[hash:base64:5]',
-          },
-        },
+        use: [
+          'style-loader',
+          'css-loader',
+        ],
       },
     ],
   },
   resolve: {
-    extensions: ['.js', '.jsx'],
+    extensions: ['.js', '.jsx', '.css'],
   },
 };
