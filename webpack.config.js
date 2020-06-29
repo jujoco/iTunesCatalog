@@ -2,7 +2,9 @@ const path = require('path');
 const DIST_DIR = path.join(__dirname, '/public');
 
 module.exports = {
-  entry: `./src/index.js`,
+  entry: [
+    'core-js',
+    './src/index.js'],
   output: {
     filename: 'bundle.js',
     path: `${DIST_DIR}`,
@@ -24,6 +26,7 @@ module.exports = {
         use: [
           'style-loader',
           'css-loader',
+          'postcss-loader'
         ],
       },
     ],

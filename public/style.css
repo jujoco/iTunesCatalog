@@ -1,9 +1,5 @@
-#app {
-  width: 90vw;
-  margin: 0 auto;
-}
+@tailwind base;
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-}
+@tailwind components;
+
+@tailwind utilities;

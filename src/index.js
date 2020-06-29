@@ -1,6 +1,11 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './components/App';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import { render } from 'react-dom';
+import { Provider } from 'react-redux'
+import store from './MusicApp/store'
+import { App } from './MusicApp';
 
-ReactDOM.render(<App />, document.getElementById('app'));
+render(
+  <Provider store={store}>
+    <App />
+  </Provider >
+  , document.getElementById('app'));

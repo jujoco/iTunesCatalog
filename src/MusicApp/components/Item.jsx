@@ -1,9 +1,9 @@
 import React from 'react';
 
-const Item = ({ type, details, handleFavorite }) => {
+export const Item = ({ type, details }) => {
   function saveFavorite(e) {
     e.preventDefault();
-    handleFavorite({ type, ...details });
+    //todo: dispatch save item
   }
 
   return (
@@ -27,4 +27,3 @@ const Item = ({ type, details, handleFavorite }) => {
   );
 };
 
-export default Item;

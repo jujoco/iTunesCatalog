@@ -1,12 +1,11 @@
 import React from 'react';
-import Item from './Item';
-import { Table } from 'reactstrap';
+import { Item } from './Item';
 
-const Category = ({ category, sectionName, handleFavorite }) => {
+export const Category = ({ category, sectionName }) => {
   return (
     <div className="Category">
       <h2>{sectionName}</h2>
-      <Table className="Table" dark>
+      <table className="Table">
         <thead>
           <tr scope="row">
             <th>Artwork</th>
@@ -18,12 +17,15 @@ const Category = ({ category, sectionName, handleFavorite }) => {
         </thead>
         <tbody>
           {category.map((item, i) => {
-            return <Item type={sectionName} details={item} handleFavorite={handleFavorite} key={i} />;
+            return (
+              <Item
+                type={sectionName}
+                details={item}
+                key={i} />
+            )
           })}
         </tbody>
-      </Table>
+      </table>
     </div>
   );
 };
-
-export default Category;
