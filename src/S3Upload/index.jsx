@@ -14,22 +14,28 @@ export class App extends Component {
 
   handleChange = (ev) => {
     const file = ev.target.files[0]
-    axios.post("http://localhost:3000/sign_s3", {
-      fileName: file.name,
-      fileType: file.type
+    fetch("http://localhost:3000/sign_s3", {
+      method: 'POST',
+      body: {
+        fileName: file.name,
+        fileType: file.type
+      }
     })
-      .then(response => {
-        let { signedRequest, url } = response.data
+      .then(res => res.json())
+      .then(res => {
+        let { signedRequest, url } = res.data
         var options = {
+          method: 'PUT',
           headers: {
             'Content-Type': file.type
-          }
+          },
+          body: file
         }
 
-        axios.put(signedRequest, file, options)
-          .then(result => {
-            console.log(result)
-            console.log(url);
+        fetch(signedRequest, options)
+          .then(res => res.json())
+          .then(res => {
+            console.log('Successfuly Uploaded')
             this.setState({ success: true });
           })
           .catch(error => {
