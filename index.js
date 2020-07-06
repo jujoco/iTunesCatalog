@@ -15,6 +15,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(morgan('tiny'));
 
+
 const S3_BUCKET = process.env.AWS_BUCKET_NAME
 aws.config.update({
   region: process.env.AWS_REGION,
@@ -39,7 +40,7 @@ app.post('/sign_s3', (req, res) => {
   // Make a request to the S3 API to get a signed URL which we can use to upload our file
   s3.getSignedUrl('putObject', s3Params, (err, data) => {
     if (err) {
-      console.log('===', err);
+      console.log(err);
       res.json({ success: false, error: err })
     }
 
@@ -55,38 +56,5 @@ app.post('/sign_s3', (req, res) => {
   });
 });
 
-app.get('/search/:term', (req, res) => {
-  const term = req.params.term;
-  request(`https://itunes.apple.com/search?term=${term}`, (err, response, body) => {
-    if (err) {
-      console.log(err);
-    } else {
-      const data = JSON.parse(body);
-      const catalog = {};
-      for (let obj of data.results) {
-        if (obj.wrapperType === 'track') {
-          let val = reducer(obj);
-          if (!catalog[obj.kind]) catalog[obj.kind] = [val];
-          else catalog[obj.kind].push(val);
-        }
-      }
-      res.send(catalog);
-    }
-  })
-});
-
-function reducer(obj) {
-  const { trackId, trackName, artworkUrl60, primaryGenreName, trackViewUrl } = obj;
-
-  let newObj = {
-    id: trackId,
-    name: trackName,
-    artwork: artworkUrl60,
-    genre: primaryGenreName,
-    url: trackViewUrl,
-  };
-
-  return newObj;
-}
 
 app.listen(PORT, () => console.log(`listening on localhost:${PORT}`));
