@@ -20,8 +20,7 @@ export class App extends Component {
         let options = {
           headers: {
             'Content-Type': file.type
-          },
-          body: file
+          }
         }
 
         axios.put(signedRequest, file, options)
